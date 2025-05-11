@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Assessment Results</title>
+        <script src="jquery-3.7.1.min.js"></script>
+        <script type="text/javascript" src="index.js"></script>
+        <script type="text/javascript" src="questionair.js"></script>
+        <script type="text/javascript" src="results.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+
+
+    </head>
+    <body>
+        <body>
+            <div>
+                <div class="font-bold text-[40px] m-[15px]">ผลการประเมินคะแนน</div>
+        
+                <canvas id="scoreChart"  class="m-[100px]"></canvas>
+        
+                <div id="R" class="mb-2"></div>
+                <div id="I" class="mb-2"></div>
+                <div id="A" class="mb-2"></div>
+                <div id="S" class="mb-2"></div>
+                <div id="E" class="mb-2"></div>
+                <div id="C" class="mb-2"></div>
+        
+                <h1 class="font-bold text-[40px] m-[15px]">ผลการประเมินสาขาที่แนะนำ</h1>
+        
+                <div class="mt-2">
+                    <p class="m-[10px] text-[25px]">สาขาที่แนะนำอันดับ 1: <span id="highestResult" class="font-semibold text-blue-600"></span></p>
+                    <div id="MajorTitle" ></div>
+                </div>
+        
+                <div class="mt-4">
+                    <p class="m-[10px] text-[25px]">สาขาที่แนะนำอันดับ 2: <span id="secondResult" class="font-semibold text-green-600"></span></p>
+                        <div id="MajorTitle2" ></div>
+                    </div>
+                </div>
+            </div>
+        </body>
+        
+    </body>
+</html>

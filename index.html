@@ -4,20 +4,22 @@
         <title>Form</title>
         <script src="jquery-3.7.1.min.js"></script>
         <script type="text/javascript" src="index.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+
     </head>
     <body>
-        <form>
-            <label for="name">ชื่อ-นามสกุล (ชื่อที่ต้องการให้เรียก)</label>
+        <div class="m-[20px] border-2 border-gray-300 rounded-lg p-[20px]">
+            <label class="text-[30px] font-semibold" for="name">ชื่อ-นามสกุล (ชื่อที่ต้องการให้เรียก)</label>
             <span id="nameError"></span><br>
-            <input type="text" id="name" name="name" placeholder="Firstname Surname"><br><br>
+            <input class="text-[20px] px-2" type="text" id="name" name="name" placeholder="Firstname Surname"><br><br>
 
-            <label for="school">🏫 โรงเรียน</label>
+            <label class="text-[30px] font-semibold" for="school">🏫 โรงเรียน</label>
             <span id="schoolError"></span><br>
-            <input type="text" id="school" name="school" placeholder="school"><br><br>
+            <input class="text-[20px] px-2" type="text" id="school" name="school" placeholder="school"><br><br>
 
-            <label for="GradeLvl">🎓 ระดับชั้น</label><br>
+            <label class="text-[30px] font-semibold" for="GradeLvl">🎓 ระดับชั้น</label><br>
             <span id="GradeLvlError"></span>
-            <select id="GradeLvl" name="GradeLvl">
+            <select class="text-[20px] px-2" id="GradeLvl" name="GradeLvl">
                 <option value="">-- โปรดเลือก --</option>
                 <option value="3">ม. 3</option>
                 <option value="4">ม. 4</option>
@@ -25,83 +27,76 @@
                 <option value="6">ม. 6</option>
               </select><br><br>
 
-            <label for="Grade">📈 GPAX เฉลี่ย</label><br>
+            <label class="text-[30px] font-semibold" for="Grade">📈 GPAX เฉลี่ย</label><br>
             <span id="GradeError"></span>
-            <input type="text" id="Grade" name="Grade" placeholder="Grade"><br><br>
+            <input class="text-[20px] px-2" type="text" id="Grade" name="Grade" placeholder="Grade"><br><br>
 
             <div>
-                <label for="ExamEx">🧪 คะแนน BMAT / A-Level ที่เคยสอบ (ถ้ามี)</label><br>
-                <span id="ExamExError"></span>
+                <label class="text-[30px] font-semibold" for="ExamEx">🧪 คะแนน BMAT / A-Level ที่เคยสอบ (ถ้ามี)</label><br>
+                <span class="text-[20px]" id="ExamExError"></span>
                     <input type="checkbox" name="Gov" value="true">
-                    <label for="Gov">BMAT</label><br>
+                    <label class="text-[20px] px-2" for="Gov">BMAT</label><br>
                     <input type="checkbox" name="Private" value="true">
-                    <label for="Private">IELTS</label><br>
+                    <label class="text-[20px] px-2" for="Private">IELTS</label><br>
                     <input type="checkbox" name="Inter" value="true">
-                    <label for="Inter">TBAT</label><br> 
+                    <label class="text-[20px] px-2" for="Inter">TBAT</label><br> 
                     <input type="checkbox" name="Inter" value="true">
-                    <label for="Inter">TOEFL</label><br> 
+                    <label class="text-[20px] px-2" for="Inter">TOEFL</label><br> 
                     <input type="checkbox" name="Inter" value="true">
-                    <label for="Inter">TU-GET</label><br> 
+                    <label class="text-[20px] px-2" for="Inter">TU-GET</label><br> 
                     <input type="checkbox" name="Inter" value="true">
-                    <label for="Inter">CU-TEP</label><br> 
+                    <label class="text-[20px] px-2" for="Inter">CU-TEP</label><br> 
                     <input type="checkbox" name="Inter" value="true">
-                    <label for="Inter">TGAT</label><br> 
+                    <label class="text-[20px] px-2" for="Inter">TGAT</label><br> 
                     <input type="checkbox" name="Inter" value="true">
-                    <label for="Inter">ไม่มี</label><br> 
+                    <label class="text-[20px] px-2" for="Inter">ไม่มี</label><br> 
             </div><br>
 
             <div>
-                <label for="Tcas">📤 รอบที่สนใจยื่น (TCAS 1/2/3)</label><br>
-                <span id="TcasError"></span>
+                <label class="text-[30px] font-semibold" for="Tcas">📤 รอบที่สนใจยื่น (TCAS 1/2/3)</label><br>
+                <span  id="TcasError"></span>
                     <input type="checkbox" name="Tcas1" value="true">
-                    <label for="Tcas1">TCAS รอบที่ 1 (Portfolio)</label><br>
-                    <input type="checkbox" name="Tcas2" value="true">
-                    <label for="Tcas2">TCAS รอบที่ 2 (Quota)</label><br>
+                    <label class="text-[20px] px-2" for="Tcas1">TCAS รอบที่ 1 (Portfolio)</label><br>
+                    <input type="checkbox" id="tcas2" name="Tcas2" value="true">
+                    <label class="text-[20px] px-2" for="Tcas2">TCAS รอบที่ 2 (Quota)</label><br>
                     <input type="checkbox" name="Tcas3" value="true">
-                    <label for="Tcas3">TCAS รอบที่ 3 (Admission)</label><br>
+                    <label class="text-[20px] px-2" for="Tcas3">TCAS รอบที่ 3 (Admission)</label><br>
+                    <input type="checkbox" name="Tcas4" value="true">
+                    <label class="text-[20px] px-2" for="Tcas4">TCAS รอบที่ 4 (Direct Admission)</label><br>
             </div><br>
 
-            <div>
-                <label for="region">ภาค</label><br>
-                <span id="regionError"></span>
-                <select id="region" name="region">
-                  <option value="">-- โปรดเลือก --</option>
-                  <option value="1">ภาคเหนือ</option>
-                  <option value="2">ภาคใต้</option>
-                  <option value="3">ภาคกลาง</option>
-                  <option value="4">ภาคตะวันออก</option>
-                  <option value="5">ภาคตะวันตก</option>
-                  <option value="6">ภาคตะวันออกเฉียงเหนือ</option>
-                </select><br><br>
-            </div>
+            <div id="regionContainer"></div>
+                
 
             <div>
-                <label for="Job">💼 อาชีพที่อยากเป็น </label><br>
+                <label class="text-[30px] font-semibold" for="Job">💼 อาชีพที่อยากเป็น </label><br>
                 <span id="JobError"></span>
                     <input type="checkbox" name="Doctor" value="true">
-                    <label for="Doctor">หมอ</label><br>
+                    <label class="text-[20px] px-2" for="Doctor">แพทย์ (Medical Doctor)</label><br>
                     <input type="checkbox" name="Dentist" value="true">
-                    <label for="Dentist">ทันตะ</label><br>
+                    <label class="text-[20px] px-2" for="Dentist">ทันตแพทย์ (Dentist) </label><br>
                     <input type="checkbox" name="Pharma" value="true">
-                    <label for="Pharma">เภสัช</label><br>
+                    <label class="text-[20px] px-2" for="Pharma">เภสัชกร (Pharmacist)</label><br>
+                    <input type="checkbox" name="Vet" value="true">
+                    <label class="text-[20px] px-2" for="Vet">สัตวแพทย์ (Veterinarian)</label><br>
                     <input type="checkbox" name="Nurse" value="true">
-                    <label for="Nurse">พยาบาล</label><br>
+                    <label class="text-[20px] px-2" for="Nurse">พยาบาล (Nurse)</label><br>
                     <input type="checkbox" name="Tech" value="true">
-                    <label for="Tech">เทคนิคการแพทย์</label><br>
+                    <label class="text-[20px] px-2" for="Tech">เทคนิคการแพทย์ (Medical Technologist)</label><br>
             </div><br>
 
-            <label for="University">สนใจเรียนมหาวิทยาลัยรัฐ/เอกชน หรือโครงการอินเตอร์</label><br>
+            <label class="text-[30px] font-semibold" for="University">สนใจเรียนมหาวิทยาลัยรัฐ/เอกชน หรือโครงการอินเตอร์</label><br>
             <span id="UniversityError"></span>
                 <input type="checkbox" name="Gov" value="true">
-                <label for="Gov">มหาวิทยาลัยรัฐ</label><br>
+                <label class="text-[20px] px-2" for="Gov">มหาวิทยาลัยรัฐ</label><br>
                 <input type="checkbox" name="Private" value="true">
-                <label for="Private">เอกชน</label><br>
+                <label class="text-[20px] px-2" for="Private">เอกชน</label><br>
                 <input type="checkbox" name="Inter" value="true">
-                <label for="Inter">โครงการอินเตอร์</label><br>
+                <label class="text-[20px] px-2" for="Inter">โครงการอินเตอร์</label><br>
 
                 <br>
-            <input id="submit" type="button" value="Validate!">
-        </form>
+            <input class="text-[30px] font-bold border-2 border-gray-300 rounded-lg px-5 py-1 hover:bg-gray-300" id="next" type="button" value="Next">
+        </div>
 
     </body>
 </html>
