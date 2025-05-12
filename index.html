@@ -34,22 +34,85 @@
             <div>
                 <label class="text-[30px] font-semibold" for="ExamEx">🧪 คะแนน BMAT / A-Level ที่เคยสอบ (ถ้ามี)</label><br>
                 <span class="text-[20px]" id="ExamExError"></span>
-                    <input type="checkbox" class="exam-checkbox" name="BMAT" value="true">
-                    <label class="text-[20px] px-2" for="BMAT">BMAT</label><br>
-                    <input type="checkbox" class="exam-checkbox" name="IELTS" value="true">
-                    <label class="text-[20px] px-2" for="IELTS">IELTS</label><br>
-                    <input type="checkbox" class="exam-checkbox" name="TBAT" value="true">
-                    <label class="text-[20px] px-2" for="TBAT">TBAT</label><br> 
-                    <input type="checkbox" class="exam-checkbox" name="TOEFL" value="true">
-                    <label class="text-[20px] px-2" for="TOEFL">TOEFL</label><br> 
-                    <input type="checkbox" class="exam-checkbox" name="TU-GET" value="true">
-                    <label class="text-[20px] px-2" for="TU-GET">TU-GET</label><br> 
-                    <input type="checkbox" class="exam-checkbox" name="CU-TEP" value="true">
-                    <label class="text-[20px] px-2" for="CU-TEP">CU-TEP</label><br> 
-                    <input type="checkbox" class="exam-checkbox" name="TGAT" value="true">
-                    <label class="text-[20px] px-2" for="TGAT">TGAT</label><br> 
-                    <input type="checkbox" class="exam-checkbox" name="None" value="true">
-                    <label class="text-[20px] px-2" for="None">ไม่มี</label><br> 
+                            
+                <!-- Checkboxes with textbox containers -->
+                <div id="examCheckboxes" class="space-y-2">
+                    <!-- Each item wrapped in a flex row -->
+                    <div class="flex items-center space-x-2">
+                        <input type="checkbox" class="exam-checkbox" name="BMAT" value="true" id="BMAT">
+                        <label class="text-[20px]" for="BMAT">BMAT</label>
+                        <div id="input-container-BMAT"></div>
+                    </div>
+                
+                    <div class="flex items-center space-x-2">
+                        <input type="checkbox" class="exam-checkbox" name="IELTS" value="true" id="IELTS">
+                        <label class="text-[20px]" for="IELTS">IELTS</label>
+                        <div id="input-container-IELTS"></div>
+                    </div>
+                
+                    <div class="flex items-center space-x-2">
+                        <input type="checkbox" class="exam-checkbox" name="TBAT" value="true" id="TBAT">
+                        <label class="text-[20px]" for="TBAT">TBAT</label>
+                        <div id="input-container-TBAT"></div>
+                    </div>
+                
+                    <div class="flex items-center space-x-2">
+                        <input type="checkbox" class="exam-checkbox" name="TOEFL" value="true" id="TOEFL">
+                        <label class="text-[20px]" for="TOEFL">TOEFL</label>
+                        <div id="input-container-TOEFL"></div>
+                    </div>
+                
+                    <div class="flex items-center space-x-2">
+                        <input type="checkbox" class="exam-checkbox" name="TU-GET" value="true" id="TU-GET">
+                        <label class="text-[20px]" for="TU-GET">TU-GET</label>
+                        <div id="input-container-TU-GET"></div>
+                    </div>
+                
+                    <div class="flex items-center space-x-2">
+                        <input type="checkbox" class="exam-checkbox" name="CU-TEP" value="true" id="CU-TEP">
+                        <label class="text-[20px]" for="CU-TEP">CU-TEP</label>
+                        <div id="input-container-CU-TEP"></div>
+                    </div>
+                
+                    <div class="flex items-center space-x-2">
+                        <input type="checkbox" class="exam-checkbox" name="TGAT" value="true" id="TGAT">
+                        <label class="text-[20px]" for="TGAT">TGAT</label>
+                        <div id="input-container-TGAT"></div>
+                    </div>
+                
+                    <div class="flex items-center space-x-2">
+                        <input type="checkbox" class="exam-checkbox" name="None" value="true" id="None">
+                        <label class="text-[20px]" for="None">ไม่มี</label>
+                    </div>
+                </div>
+                
+                <script>
+                    const checkboxes = document.querySelectorAll('.exam-checkbox');
+                
+                    checkboxes.forEach(checkbox => {
+                        checkbox.addEventListener('change', function () {
+                            const exam = this.name;
+                            const inputContainer = document.getElementById(`input-container-${exam}`);
+                        
+                            if (exam === "None") return; // Skip 'ไม่มี'
+                        
+                            if (this.checked) {
+                                if (!inputContainer.querySelector('input')) {
+                                    const input = document.createElement("input");
+                                    input.type = "text";
+                                    input.name = `score-${exam}`;
+                                    input.placeholder = `กรอกคะแนน ${exam}`;
+                                    input.className = "p-1 border rounded w-[200px]";
+                                    inputContainer.appendChild(input);
+                                }
+                            } else {
+                                inputContainer.innerHTML = "";
+                            }
+                        });
+                    });
+                </script>
+
+
             </div><br>
 
             <div>

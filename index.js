@@ -27,26 +27,76 @@ $(document).ready(function(){
 });
 
 function onButtonClick() {
-    // Get the value of the input field
-    const Name = $('input[name="name"]').val();
-    const School = $('input[name="school"]').val();
+    let isValid = true;
+
+    // Clear previous error messages
+    $("#nameError, #schoolError, #GradeLvlError, #GradeError, #ExamExError, #TcasError, #regionError, #JobError, #UniversityError").text("");
+
+    // Name
+    const Name = $('input[name="name"]').val().trim();
+    if (!Name) {
+        $("#nameError").html("<div>⚠️ โปรดกรอกชื่อ</div>").addClass("text-red-500 text-[20px]");
+        isValid = false;
+    }
+
+    // School
+    const School = $('input[name="school"]').val().trim();
+    if (!School) {
+        $("#schoolError").html("<div>⚠️ โปรดกรอกชื่อโรงเรียน</div>").addClass("text-red-500 text-[20px]");
+        isValid = false;
+    }
+
+    // Grade Level
     const GradeLvl = $('select[name="GradeLvl"]').val();
-    const Grade = $('input[name="Grade"]').val();
-    const Region = $('select[name="region"]:checked').val();
+    if (!GradeLvl) {
+        $("#GradeLvlError").html("<div>⚠️ โปรดเลือกระดับชั้น</div>").addClass("text-red-500 text-[20px]");
+        isValid = false;
+    }
 
-    const ExamEx = [];
-    $('.exam-checkbox:checked').each(function () {
-        const label = $(this).next("label").text().trim(); // Gets the label text
-        ExamEx.push(label);
-    });
+    // Grade
+    const Grade = $('input[name="Grade"]').val().trim();
+    if (!Grade) {
+        $("#GradeError").html("<div>⚠️ โปรดกรอกเกรดเฉลี่ย</div>").addClass("text-red-500 text-[20px]");
+        isValid = false;
+    }
 
+    // Exam Scores
+    const checkedExams = $('.exam-checkbox:checked');
+    if (checkedExams.length === 0) {
+        $("#ExamExError").html("<div>⚠️ โปรดเลือกอย่างน้อยหนึ่งข้อ</div>").addClass("text-red-500 text-[20px]");
+        isValid = false;
+    } else {
+        // If "None" is not selected, check all score inputs are filled
+        if (!$("#None").is(":checked")) {
+            checkedExams.each(function () {
+                const exam = $(this).attr("name");
+                const score = $(`input[name="score-${exam}"]`).val();
+                if (!score) {
+                    $(`#input-container-${exam}`).append(`<span class="text-red-500 text-[20px] ml-2">⚠️ โปรดกรอกคะแนน</span>`);
+                    isValid = false;
+                }
+            });
+        }
+    }
+
+    // TCAS rounds
     const Tcas = [];
-    $('input[name="Tcas1"]:checked').each(() => Tcas.push("1"));
-    $('input[name="Tcas2"]:checked').each(() => Tcas.push("2"));
-    $('input[name="Tcas3"]:checked').each(() => Tcas.push("3"));
-    $('input[name="Tcas4"]:checked').each(() => Tcas.push("4"));
+    $('input[name^="Tcas"]:checked').each(function () {
+        Tcas.push($(this).attr("name").replace("Tcas", ""));
+    });
+    if (Tcas.length === 0) {
+        $("#TcasError").html("<div>⚠️ โปรดเลือกรอบที่สนใจ</div>").addClass("text-red-500 text-[20px]");
+        isValid = false;
+    }
 
+    // Region required only if TCAS2 is selected
+    const Region = $('select[name="region"]').val();
+    if ($("#tcas2").is(":checked") && !Region) {
+        $("#regionError").html("<div>⚠️ โปรดเลือกภาค</div>").addClass("text-red-500 text-[20px]");
+        isValid = false;
+    }
 
+    // Jobs
     const Jobs = [];
     $('input[name="Doctor"]:checked').each(() => Jobs.push("Doctor"));
     $('input[name="Dentist"]:checked').each(() => Jobs.push("Dentist"));
@@ -54,15 +104,24 @@ function onButtonClick() {
     $('input[name="Vet"]:checked').each(() => Jobs.push("Vet"));
     $('input[name="Nurse"]:checked').each(() => Jobs.push("Nurse"));
     $('input[name="Tech"]:checked').each(() => Jobs.push("MedTech"));
+    if (Jobs.length === 0) {
+        $("#JobError").html("<div>⚠️ โปรดเลือกอาชีพ</div>").addClass("text-red-500 text-[20px]");
+        isValid = false;
+    }
 
+    // University
     const UniversitySet = new Set();
-
     $('input[name="Gov"]:checked').each(() => UniversitySet.add("gov"));
     $('input[name="Private"]:checked').each(() => UniversitySet.add("pri"));
     $('input[name="Inter"]:checked').each(() => UniversitySet.add("inter"));
-    
     const University = Array.from(UniversitySet);
+    if (University.length === 0) {
+        $("#UniversityError").html("<div>⚠️ โปรดเลือกประเภทมหาวิทยาลัย</div>").addClass("text-red-500 text-[20px]");
+        isValid = false;
+    }
 
+    // If any field is invalid, do not continue
+    if (!isValid) return;
 
     const formData = {
         Name,
@@ -70,15 +129,12 @@ function onButtonClick() {
         GradeLvl,
         Grade,
         Region,
-        ExamEx,
+        ExamEx: checkedExams.map((_, el) => $(el).next("label").text().trim()).get(),
         Tcas,
         Jobs,
         University
     };
 
-    
-
-    // record the results
     localStorage.setItem("formData", JSON.stringify(formData));
     console.log(formData);
 

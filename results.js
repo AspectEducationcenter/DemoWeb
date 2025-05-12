@@ -127,11 +127,11 @@ function fetchSheetData(category) {
                 fetch(url)
                     .then(response => response.text())
                     .then(text => {
-                        const rows = text.trim().split('\n').map(row => row.split(','));
-                        resolve(rows);  // Resolve with the data
+                        const parsed = Papa.parse(text, { skipEmptyLines: true });
+                        resolve(parsed.data);  // Array of rows
                     })
                     .catch(error => {
-                        reject("Fetch error: " + error);  // Reject on error
+                        reject("Fetch error: " + error);
                     });
                 return;  // Exit the loop once the matching category is found
             }
@@ -176,6 +176,7 @@ function findHighestRecommendations(highestCategory) {
                 for (let i = 0; i < data.length; i++) {
                     const row = data[i];
                     const tcasRound = row[5];
+                    
                     let acceptGrade = null;
                     if (row[6]) {
                         acceptGrade = parseFloat(row[6].replace(/[^0-9.]/g, ''));
@@ -201,7 +202,7 @@ function findHighestRecommendations(highestCategory) {
                     const rowDiv = document.createElement("div");
                     rowDiv.className = "m-2 mx-5 p-5 px-10 text-[20px] bg-gray-200 rounded-lg shadow-md flex flex-row hover:bg-gray-300 cursor-pointer";
 
-                    const columns = [row[2], row[1], row[5], row[6]];
+                    const columns = [row[2], row[4], row[5], row[6]];
                     columns.forEach(cellData => {
                         const cellDiv = document.createElement("div");
                         cellDiv.className = "flex-grow text-left";
@@ -231,14 +232,16 @@ function showModal(row) {
     const modalDetails = document.getElementById("modalDetails");
 
     // Assuming the row contains details like university name, major, grade requirement, etc.
-    modalTitle.innerText = `University: ${row[2]}`; // Adjust based on your row data
+    modalTitle.innerText = `มหาวิทยาลัย: ${row[2]}`; // Adjust based on your row data
     modalDetails.innerHTML = `
         <strong>คณะ:</strong> ${row[1]}<br>
+        <strong>ชื่อหลักสูตรแบบเต็ม:</strong> ${row[3]}<br>
+        <strong>รูปแบบของหลักสูตร:</strong> ${row[4]}<br>
         <strong>รอบ TCAS:</strong> ${row[5]}<br>
         <strong>เกรดขั้นต่ำ:</strong> ${row[6] !== "" ? row[6] : "ไม่ระบุ"}<br>
-        <strong>เหตุผลที่แนะนำมหาลัยนี้:</strong> ${row[16]}<br>
-        <strong>Insight Qoute:</strong> ${row[17]}<br>
-        <strong>Tag ความเหมาะสม:</strong> ${row[18]}<br>
+        <strong>เหตุผลที่แนะนำมหาลัยนี้:</strong> ${row[10]}<br>
+        <strong>Insight Qoute:</strong> ${row[11]}<br>
+        <strong>Tag ความเหมาะสม:</strong> ${row[12]}<br>
     `;
 
     modal.classList.remove("hidden"); // Show the modal
@@ -312,7 +315,7 @@ function findSecondHighestRecommendations(secondHighestCategory) {
                 filteredData.forEach(row => {
                     let tableRowHTML = "<div class='m-2 mx-5 p-5 px-10 text-[20px] bg-gray-200 rounded-lg shadow-md flex flex-row hover:bg-gray-300'>";
 
-                    const columns = [row[2], row[1], row[5], row[6]];
+                    const columns = [row[2], row[4], row[5], row[6]];
                     columns.forEach(cellData => {
                         tableRowHTML += `<div class='flex-grow text-left'>${cellData}</div>`;
                     });
