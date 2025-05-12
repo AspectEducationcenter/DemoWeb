@@ -201,7 +201,7 @@ function findHighestRecommendations(highestCategory) {
                 filteredData.forEach(row => {
                     let tableRowHTML = "<div class='m-2 mx-5 p-5 px-10 text-[20px] bg-gray-200 rounded-lg shadow-md flex flex-row hover:bg-gray-300'>";
 
-                    const columns = [row[0], row[1], row[5], row[6]];
+                    const columns = [row[2], row[1], row[5], row[6]];
                     columns.forEach(cellData => {
                         tableRowHTML += `<div class='flex-grow text-left'>${cellData}</div>`;
                     });
@@ -278,7 +278,7 @@ function findSecondHighestRecommendations(secondHighestCategory) {
                 filteredData.forEach(row => {
                     let tableRowHTML = "<div class='m-2 mx-5 p-5 px-10 text-[20px] bg-gray-200 rounded-lg shadow-md flex flex-row hover:bg-gray-300'>";
 
-                    const columns = [row[0], row[1], row[5], row[6]];
+                    const columns = [row[2], row[1], row[5], row[6]];
                     columns.forEach(cellData => {
                         tableRowHTML += `<div class='flex-grow text-left'>${cellData}</div>`;
                     });
