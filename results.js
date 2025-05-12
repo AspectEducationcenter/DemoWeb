@@ -256,23 +256,20 @@ document.getElementById("closeModal").addEventListener("click", () => {
 
 
 function findSecondHighestRecommendations(secondHighestCategory) {
-    // Fetch User data from localStorage
     const userDataJSON = localStorage.getItem("formData");
     if (!userDataJSON) {
         console.error("No user data found in localStorage.");
         return;
     }
     const userData = JSON.parse(userDataJSON);
-
     console.log(userData);
 
     const title = document.getElementById("MajorTitle2");
-    title.innerHTML = ""; // Clear previous content
+    title.innerHTML = "";
 
     secondHighestCategory.forEach((category, index) => {
         const filteredData = [];
 
-        // Create title and container for each category
         const categoryTitle = document.createElement("h1");
         categoryTitle.className = "text-3xl font-bold text-green-600 mx-2 mb-2";
         categoryTitle.innerText = category;
@@ -280,7 +277,7 @@ function findSecondHighestRecommendations(secondHighestCategory) {
 
         const container = document.createElement("div");
         container.id = `possibleMajor2-${index}`;
-        container.className = "overflow-y-auto max-h-[400px] mb-6"; // Tailwind scroll setup
+        container.className = "overflow-y-auto max-h-[400px] mb-6";
         title.appendChild(container);
 
         fetchSheetData(category)
@@ -291,6 +288,7 @@ function findSecondHighestRecommendations(secondHighestCategory) {
                 for (let i = 0; i < data.length; i++) {
                     const row = data[i];
                     const tcasRound = row[5];
+
                     let acceptGrade = null;
                     if (row[6]) {
                         acceptGrade = parseFloat(row[6].replace(/[^0-9.]/g, ''));
@@ -313,15 +311,22 @@ function findSecondHighestRecommendations(secondHighestCategory) {
                 }
 
                 filteredData.forEach(row => {
-                    let tableRowHTML = "<div class='m-2 mx-5 p-5 px-10 text-[20px] bg-gray-200 rounded-lg shadow-md flex flex-row hover:bg-gray-300'>";
+                    const rowDiv = document.createElement("div");
+                    rowDiv.className = "m-2 mx-5 p-5 px-10 text-[20px] bg-gray-200 rounded-lg shadow-md flex flex-row hover:bg-gray-300 cursor-pointer";
 
                     const columns = [row[2], row[4], row[5], row[6]];
                     columns.forEach(cellData => {
-                        tableRowHTML += `<div class='flex-grow text-left'>${cellData}</div>`;
+                        const cellDiv = document.createElement("div");
+                        cellDiv.className = "flex-grow text-left";
+                        cellDiv.innerText = cellData;
+                        rowDiv.appendChild(cellDiv);
                     });
 
-                    tableRowHTML += "</div>";
-                    container.innerHTML += tableRowHTML;
+                    rowDiv.addEventListener("click", () => {
+                        showModal(row);
+                    });
+
+                    container.appendChild(rowDiv);
                 });
             })
             .catch(error => {
@@ -329,5 +334,6 @@ function findSecondHighestRecommendations(secondHighestCategory) {
             });
     });
 }
+
 
 

@@ -63,7 +63,31 @@ async function storeDataAndRedirect() {
 
 
 function onButtonClick() {
-    // Get the value of the input field
+    const fields = ["R1", "R2", "I1", "I2", "A1", "A2", "S1", "S2", "E1", "E2", "C1", "C2"];
+    let isValid = true;
+
+
+    for (let i = 0; i < fields.length; i += 1) {
+        const first = $('input[name="' + fields[i] + '"]:checked').val();
+
+        const groupKey = fields[i]; // 'R', 'I', etc.
+
+        if (!first) {
+            $(`#${groupKey}Error`).html("⚠️ กรุณาเลือกตัวเลือกอย่างน้อยหนึ่งข้อ").addClass("text-red-500 text-[20px]");
+            console.log(`Please select at least one option from ${groupKey}`);
+            isValid = false;
+        }else{
+            // console.log(`Please select at least one option3 from ${groupKey}`);
+            $(`#${groupKey}Error`).html("").removeClass("text-red-500 text-sm");
+        }
+    }
+
+    if (!isValid) {
+        console.log("Please select at least one option from each group.");
+        return;
+    }
+
+    // Proceed only if all inputs are selected
     const R1 = $('input[name="R1"]:checked').val();
     const R2 = $('input[name="R2"]:checked').val();
     const I1 = $('input[name="I1"]:checked').val(); 
@@ -77,7 +101,6 @@ function onButtonClick() {
     const C1 = $('input[name="C1"]:checked').val();
     const C2 = $('input[name="C2"]:checked').val();
 
-    // Convert the values to numbers
     const scoreResults = {
         Realistic: parseInt(R1) + parseInt(R2),
         Investigative: parseInt(I1) + parseInt(I2),
@@ -86,8 +109,7 @@ function onButtonClick() {
         Enterprising: parseInt(E1) + parseInt(E2),
         Conventional: parseInt(C1) + parseInt(C2)
     };
-    
-    // record the results
+
     const results = {
         Doctor: scoreResults.Investigative + scoreResults.Social,
         Dentist: scoreResults.Artistic + scoreResults.Enterprising,
@@ -97,14 +119,11 @@ function onButtonClick() {
         Nurse: scoreResults.Conventional + scoreResults.Social,
     };
 
-    // Find the highest and second highest values
     let highestCategory = null;
     let highestValue = -Infinity;
-
     let secondHighestCategory = null;
     let secondHighestValue = -Infinity;
 
-    // Find the highest and second highest values
     for (const [category, value] of Object.entries(results)) {
         if (value > highestValue) {
             secondHighestValue = highestValue;
@@ -117,13 +136,12 @@ function onButtonClick() {
         }
     }
 
-    // Display the results
-    console.log(`The category with the highest value is ${highestCategory} with a score of ${highestValue}.`);
-    console.log(`The category with the second highest value is ${secondHighestCategory} with a score of ${secondHighestValue}.`);
+    console.log(`Highest: ${highestCategory} (${highestValue})`);
+    console.log(`Second: ${secondHighestCategory} (${secondHighestValue})`);
 
-    // Store the objects as JSON strings
     localStorage.setItem("results", JSON.stringify(results));
     localStorage.setItem("scoreResults", JSON.stringify(scoreResults)); 
 
-    storeDataAndRedirect(); // Call the function to store data in Firebase and redirect
+    storeDataAndRedirect();
 }
+
