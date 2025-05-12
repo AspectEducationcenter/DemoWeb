@@ -4,6 +4,64 @@ $(document).ready(function(){
     });
 });
 
+// Initialize Firebase
+const firebaseConfig = {
+  apiKey: "AIzaSyArvLzfrfCokxeyU9TKw8y-eQHe8TDhRqM",
+  authDomain: "aspect-fe612.firebaseapp.com",
+  projectId: "aspect-fe612",
+  storageBucket: "aspect-fe612.firebasestorage.app",
+  messagingSenderId: "1001576154561",
+  appId: "1:1001576154561:web:6ce13acd739f7b6cf49b40",
+  measurementId: "G-943RFHX4TV"
+};
+
+firebase.initializeApp(firebaseConfig);
+const db = firebase.firestore();
+
+async function storeFirebaseData() {
+    // Get the from local storage
+    const results = JSON.parse(localStorage.getItem("results"));
+    const scoreResults = JSON.parse(localStorage.getItem("scoreResults"));
+    const formData = JSON.parse(localStorage.getItem("formData"));
+
+    // create a new document in the "users" collection
+    const userData = {
+        name: formData.Name || "",
+        school: formData.School || "",
+        gradeLevel: formData.GradeLvl || "",
+        grade: formData.Grade || "",
+        region: formData.Region || "",
+        examEx: formData.ExamEx || "",
+        tcas: formData.Tcas || "",
+        jobs: formData.Jobs || [],
+        university: formData.University || "",
+        results: results || {},
+        scoreResults: scoreResults || {}
+    };
+    console.log(userData);
+
+
+  try {
+    const docRef = await db.collection("users").add(userData);
+    console.log("Document written with ID: ", docRef.id);
+  } catch (e) {
+    console.error("Error adding document: ", e);
+  }
+}
+
+async function storeDataAndRedirect() {
+    try {
+        // Store data in Firebase
+        await storeFirebaseData(); // Wait for Firebase to finish storing
+
+        // After data is stored, redirect to the results page
+        window.location.href = "results.html";
+    } catch (error) {
+        console.error("Error storing data:", error);
+    }
+}
+
+
 function onButtonClick() {
     // Get the value of the input field
     const R1 = $('input[name="R1"]:checked').val();
@@ -67,6 +125,5 @@ function onButtonClick() {
     localStorage.setItem("results", JSON.stringify(results));
     localStorage.setItem("scoreResults", JSON.stringify(scoreResults)); 
 
-    // Redirect to the results page with the scores as query parameters
-    window.location.href = `results.html`;
+    storeDataAndRedirect(); // Call the function to store data in Firebase and redirect
 }

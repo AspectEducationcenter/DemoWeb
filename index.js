@@ -35,10 +35,8 @@ function onButtonClick() {
     const Region = $('select[name="region"]:checked').val();
 
     const ExamEx = [];
-    $('input[name="Gov"]:checked').each(() => ExamEx.push("BMAT"));
-    $('input[name="Private"]:checked').each(() => ExamEx.push("IELTS"));
-    $('input[name="Inter"]:checked').each(function () {
-        const label = $(this).next("label").text().trim();
+    $('.exam-checkbox:checked').each(function () {
+        const label = $(this).next("label").text().trim(); // Gets the label text
         ExamEx.push(label);
     });
 
@@ -57,10 +55,14 @@ function onButtonClick() {
     $('input[name="Nurse"]:checked').each(() => Jobs.push("Nurse"));
     $('input[name="Tech"]:checked').each(() => Jobs.push("MedTech"));
 
-    const University = [];
-    $('input[name="Gov"]:checked').each(() => University.push("gov"));
-    $('input[name="Private"]:checked').each(() => University.push("pri"));
-    $('input[name="Inter"]:checked').each(() => University.push("int"));
+    const UniversitySet = new Set();
+
+    $('input[name="Gov"]:checked').each(() => UniversitySet.add("gov"));
+    $('input[name="Private"]:checked').each(() => UniversitySet.add("pri"));
+    $('input[name="Inter"]:checked').each(() => UniversitySet.add("inter"));
+    
+    const University = Array.from(UniversitySet);
+
 
     const formData = {
         Name,
