@@ -36,6 +36,21 @@
                     </div>
                 </div>
             </div>
+            <!-- Modal Structure -->
+            <div id="universityModal" class="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center hidden">
+                <div class="bg-white p-8 rounded-lg w-1/2">
+                    <h2 id="modalTitle" class="text-2xl font-bold mb-4"></h2>
+                    <p id="modalDetails" class="text-lg mb-4"></p>
+                    <button id="closeModal" class="px-4 py-2 bg-red-500 text-white rounded">Close</button>
+                </div>
+            </div>
+
+            <script>
+                // Close the modal when the close button is clicked
+                document.getElementById("closeModal").addEventListener("click", () => {
+                    document.getElementById("universityModal").classList.add("hidden");
+                });
+            </script>
         </body>
         
     </body>

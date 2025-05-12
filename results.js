@@ -141,7 +141,6 @@ function fetchSheetData(category) {
     });
 }
 
-// Function to find recommendations
 function findHighestRecommendations(highestCategory) {
     // Fetch User data from localStorage
     const userDataJSON = localStorage.getItem("formData");
@@ -199,22 +198,57 @@ function findHighestRecommendations(highestCategory) {
                 }
 
                 filteredData.forEach(row => {
-                    let tableRowHTML = "<div class='m-2 mx-5 p-5 px-10 text-[20px] bg-gray-200 rounded-lg shadow-md flex flex-row hover:bg-gray-300'>";
+                    const rowDiv = document.createElement("div");
+                    rowDiv.className = "m-2 mx-5 p-5 px-10 text-[20px] bg-gray-200 rounded-lg shadow-md flex flex-row hover:bg-gray-300 cursor-pointer";
 
                     const columns = [row[2], row[1], row[5], row[6]];
                     columns.forEach(cellData => {
-                        tableRowHTML += `<div class='flex-grow text-left'>${cellData}</div>`;
+                        const cellDiv = document.createElement("div");
+                        cellDiv.className = "flex-grow text-left";
+                        cellDiv.innerText = cellData;
+                        rowDiv.appendChild(cellDiv);
                     });
-
-                    tableRowHTML += "</div>";
-                    container.innerHTML += tableRowHTML;
+                
+                    // Attach click event directly to this row
+                    rowDiv.addEventListener("click", () => {
+                        showModal(row);
+                    });
+                
+                    container.appendChild(rowDiv);
                 });
+
             })
             .catch(error => {
                 console.error(`Error fetching data for ${category}:`, error);
             });
     });
 }
+
+// Show modal with the detailed university information
+function showModal(row) {
+    const modal = document.getElementById("universityModal");
+    const modalTitle = document.getElementById("modalTitle");
+    const modalDetails = document.getElementById("modalDetails");
+
+    // Assuming the row contains details like university name, major, grade requirement, etc.
+    modalTitle.innerText = `University: ${row[2]}`; // Adjust based on your row data
+    modalDetails.innerHTML = `
+        <strong>คณะ:</strong> ${row[1]}<br>
+        <strong>รอบ TCAS:</strong> ${row[5]}<br>
+        <strong>เกรดขั้นต่ำ:</strong> ${row[6] !== "" ? row[6] : "ไม่ระบุ"}<br>
+        <strong>เหตุผลที่แนะนำมหาลัยนี้:</strong> ${row[16]}<br>
+        <strong>Insight Qoute:</strong> ${row[17]}<br>
+        <strong>Tag ความเหมาะสม:</strong> ${row[18]}<br>
+    `;
+
+    modal.classList.remove("hidden"); // Show the modal
+}
+
+// Close the modal
+document.getElementById("closeModal").addEventListener("click", () => {
+    document.getElementById("universityModal").classList.add("hidden");
+});
+
 
 
 
