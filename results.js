@@ -141,6 +141,28 @@ function fetchSheetData(category) {
     });
 }
 
+function getUniversityRegion(universityRegion) {
+    if (universityRegion === "ภาคเหนือ"){
+        return "1";
+    }
+    if (universityRegion === "ภาคใต้"){
+        return "2";
+    }
+    if (universityRegion === "ภาคกลาง"){
+        return "3";
+    }
+    if (universityRegion === "ภาคตะวันออก"){
+        return "4";
+    }
+    if (universityRegion === "ภาคตะวันตก"){
+        return "5";
+    }
+    if (universityRegion === "ภาคตะวันออกเฉียงเหนือ"){
+        return "6";
+    }
+    return null;
+}
+
 function findHighestRecommendations(highestCategory) {
     // Fetch User data from localStorage
     const userDataJSON = localStorage.getItem("formData");
@@ -172,22 +194,42 @@ function findHighestRecommendations(highestCategory) {
             .then(data => {
                 const tcasRounds = userData.Tcas;
                 const userGrade = userData.Grade;
+                const userUniversityType = userData.University;
+                const userRegion = userData.Region;
+                console.log(userRegion);
+                // console.log(userUniversityType);
 
                 for (let i = 0; i < data.length; i++) {
                     const row = data[i];
                     const tcasRound = row[5];
-                    
+                    const universityType = (getUniversityType(row[13]) || "").trim().toLowerCase(); // Convert to lower case string
+                    const region = (getUniversityRegion(row[14]) || "").trim();
+
                     let acceptGrade = null;
                     if (row[6]) {
                         acceptGrade = parseFloat(row[6].replace(/[^0-9.]/g, ''));
                     }
+                    if (row[6] === "ไม่กำหนด") {
+                        acceptGrade = 0;
+                    }
+
+                    const matchesUniversityType = userUniversityType.includes(universityType);
+                    const matchesRegion = !userRegion || (region && userRegion.includes(region));
 
                     if (
                         tcasRound &&
                         tcasRounds.some(round => tcasRound.includes(round)) &&
-                        userGrade >= acceptGrade
+                        userGrade >= acceptGrade &&
+                        matchesUniversityType 
                     ) {
-                        filteredData.push(row);
+                        if (tcasRounds.includes("2")&&(!userRegion || (region && userRegion.includes(region)))) {
+                            console.log("TCAS2 Round");
+                            filteredData.push(row);
+                        }
+                        else if(!tcasRound.includes("2")) {
+                            filteredData.push(row);
+                        }
+                        // filteredData.push(row);
                     }
                 }
 
@@ -252,7 +294,17 @@ document.getElementById("closeModal").addEventListener("click", () => {
     document.getElementById("universityModal").classList.add("hidden");
 });
 
-
+function getUniversityType(universityType) {
+    if (universityType === "รัฐบาล"){
+        return "gov";
+    }
+    if( universityType === "เอกชน"){
+        return "pri";
+    }
+    if (universityType === "นานาชาติ"){
+        return "inter";
+    }
+}
 
 
 function findSecondHighestRecommendations(secondHighestCategory) {
@@ -282,24 +334,44 @@ function findSecondHighestRecommendations(secondHighestCategory) {
 
         fetchSheetData(category)
             .then(data => {
-                const tcasRounds = userData.Tcas;
+                const tcasRounds = Array.isArray(userData.Tcas) ? userData.Tcas : [];
                 const userGrade = userData.Grade;
+                const userUniversityType = Array.isArray(userData.University) ? userData.University.map(u => u.trim().toLowerCase()) : [];
+                const userRegion = userData.Region;
+                console.log("User University Type:", userUniversityType);
+                console.log("User Region:", userRegion);
 
                 for (let i = 0; i < data.length; i++) {
                     const row = data[i];
                     const tcasRound = row[5];
+                    const universityType = (getUniversityType(row[13]) || "").trim().toLowerCase(); // Convert to lower case string
+                    const region = (getUniversityRegion(row[14]) || "").trim();
 
                     let acceptGrade = null;
                     if (row[6]) {
                         acceptGrade = parseFloat(row[6].replace(/[^0-9.]/g, ''));
                     }
+                    if (row[6] === "ไม่กำหนด") {
+                        acceptGrade = 0;
+                    }
+
+                    const matchesUniversityType = userUniversityType.includes(universityType);
+                    const matchesRegion = !userRegion || (region && userRegion.includes(region));
 
                     if (
                         tcasRound &&
                         tcasRounds.some(round => tcasRound.includes(round)) &&
-                        userGrade >= acceptGrade
+                        userGrade >= acceptGrade &&
+                        matchesUniversityType 
                     ) {
-                        filteredData.push(row);
+                        if (tcasRounds.includes("2")&&(!userRegion || (region && userRegion.includes(region)))) {
+                            console.log("TCAS2 Round");
+                            filteredData.push(row);
+                        }
+                        else if(!tcasRound.includes("2")) {
+                            filteredData.push(row);
+                        }
+                        // filteredData.push(row);
                     }
                 }
 
@@ -334,6 +406,3 @@ function findSecondHighestRecommendations(secondHighestCategory) {
             });
     });
 }
-
-
-
