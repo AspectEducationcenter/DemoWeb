@@ -202,14 +202,16 @@ function findHighestRecommendations(highestCategory) {
                 for (let i = 0; i < data.length; i++) {
                     const row = data[i];
                     const tcasRound = row[5];
-                    const universityType = (getUniversityType(row[13]) || "").trim().toLowerCase(); // Convert to lower case string
-                    const region = (getUniversityRegion(row[14]) || "").trim();
+                    const universityType = (getUniversityType(row[14]) || "").trim().toLowerCase(); // Convert to lower case string
+                    const region = (getUniversityRegion(row[15]) || "").trim();
+
 
                     let acceptGrade = null;
                     if (row[6]) {
                         acceptGrade = parseFloat(row[6].replace(/[^0-9.]/g, ''));
                     }
-                    if (row[6] === "ไม่กำหนด") {
+                    if (row[6] === "ไม่กำหนด" || row[6] === "") {
+                        row[6] = "ไม่กำหนด";
                         acceptGrade = 0;
                     }
 
@@ -344,14 +346,15 @@ function findSecondHighestRecommendations(secondHighestCategory) {
                 for (let i = 0; i < data.length; i++) {
                     const row = data[i];
                     const tcasRound = row[5];
-                    const universityType = (getUniversityType(row[13]) || "").trim().toLowerCase(); // Convert to lower case string
-                    const region = (getUniversityRegion(row[14]) || "").trim();
+                    const universityType = (getUniversityType(row[14]) || "").trim().toLowerCase(); // Convert to lower case string
+                    const region = (getUniversityRegion(row[15]) || "").trim();
 
                     let acceptGrade = null;
                     if (row[6]) {
                         acceptGrade = parseFloat(row[6].replace(/[^0-9.]/g, ''));
                     }
-                    if (row[6] === "ไม่กำหนด") {
+                    if (row[6] === "ไม่กำหนด" || row[6] === "") {
+                        row[6] = "ไม่กำหนด";
                         acceptGrade = 0;
                     }
 
